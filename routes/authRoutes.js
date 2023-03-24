@@ -8,7 +8,13 @@ module.exports = (app) => {
     })
   );
 
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res, next) => {
+      res.redirect('/surveys');
+    }
+  );
 
   app.get(
     '/auth/github',
