@@ -1,13 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-// export const testThunk = createAsyncThunk('test', () => {
-//   // const res = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-//   // const data = await res.json();
-//   // return data;
-//   return fetch('https://jsonplaceholder.typicode.com/todos/1').then((res) =>
-//     res.json()
-//   );
-// });
+import axios from 'axios';
 
 // export const testVanillaThunk = () => async (dispatch) => {
 //   const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
@@ -16,27 +8,29 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 //   dispatch(returnPost(data));
 // };
 
+export const getUser = createAsyncThunk('getUser', async () => {
+  const response = await axios.get('/api/current_user');
+  return response.data;
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    authState: null,
+    user: null,
+    isLoading: false,
   },
-  reducers: {
-    returnAuth: (state, action) => {
-      return state.authState;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getUser.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+    });
   },
-  // extraReducers: {
-  //   [testThunk.pending]: (state) => {
-  //     state.isLoading = true;
-  //   },
-  //   [testThunk.fulfilled]: (state, { payload }) => {
-  //     state.isLoading = false;
-  //     state.posts = payload;
-  //   },
-  // },
 });
 
-export const { returnAuth } = authSlice.actions;
+export const actions = authSlice.actions;
 
 export default authSlice.reducer;

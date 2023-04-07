@@ -36,21 +36,3 @@ passport.use(
     }
   )
 );
-
-passport.use(
-  new GitHubStrategy(
-    {
-      clientID: keys.gitHubClientID,
-      clientSecret: keys.gitHubSecret,
-      callbackURL: '/auth/github/callback',
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ gitHubId: profile.id });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const newUser = await new User({ gitHubId: profile.id }).save();
-      done(null, newUser);
-    }
-  )
-);
