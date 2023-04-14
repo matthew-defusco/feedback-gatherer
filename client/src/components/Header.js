@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { user, isLoading } = useSelector((store) => store.auth);
@@ -6,14 +7,14 @@ const Header = () => {
   return (
     <nav>
       <div className="nav-wrapper">
-        <a href="/" className="left brand-logo">
+        <Link to={user ? "/surveys" : "/"} className="left brand-logo">
           Emaily
-        </a>
+        </Link>
         <ul className="right">
           {isLoading && null}
           {user && (
             <li>
-              <a>Logout</a>
+              <a href="/api/logout">Logout</a>
             </li>
           )}
           {!user && (
