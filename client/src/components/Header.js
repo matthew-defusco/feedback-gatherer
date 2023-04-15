@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import Payments from "./Payments";
+
 const Header = () => {
   const { user, isLoading } = useSelector((store) => store.auth);
 
@@ -13,9 +15,14 @@ const Header = () => {
         <ul className="right">
           {isLoading && null}
           {user && (
-            <li>
-              <a href="/api/logout">Logout</a>
-            </li>
+            <>
+              <li>
+                <Payments />
+              </li>
+              <li>
+                <a href="/api/logout">Logout</a>
+              </li>
+            </>
           )}
           {!user && (
             <li>
