@@ -39,6 +39,7 @@ const authSlice = createSlice({
     });
     builder.addCase(handleToken.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.user = action.payload;
     });
   },
 });

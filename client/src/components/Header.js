@@ -13,17 +13,37 @@ const Header = () => {
           Emaily
         </Link>
         <ul className="right">
-          {isLoading && null}
-          {user && (
+          {/* If waiting for new credits to be loaded... */}
+          {user && isLoading && (
+            <div style={{ marginRight: "150px", marginTop: "10px" }}>
+              <div class="preloader-wrapper small active">
+                <div class="spinner-layer spinner-green-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* If the user is logged in and there are no new credits to load.... */}
+          {user && !isLoading && (
             <>
               <li>
                 <Payments />
               </li>
+              <li style={{ margin: "0 10px" }}>Credits: {user.credits}</li>
               <li>
                 <a href="/api/logout">Logout</a>
               </li>
             </>
           )}
+          {/* If the user is not logged in... */}
           {!user && (
             <li>
               <a href="/auth/google">Login With Google</a>
