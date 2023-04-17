@@ -1,3 +1,28 @@
+const mongoose = require("mongoose");
+const requireLogin = require("../middlewares/requireLogin");
+const requireCredits = require("../middlewares/requireCredits");
+const Mailer = require("../services/Mailer");
+const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
+
+const Survey = mongoose.model("Survey");
+
 module.exports = (app) => {
-  app.post("/api/surveys", (req, res) => {});
+  app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
+    const { title, subject, body, recipients } = req.body;
+    // req.user.credit -= 1;
+    // const user = await req.user.save();
+
+    const survey = new Survey({
+      title,
+      subject,
+      body,
+      recipients: recipients.split(",").map((r) => ({ email: r.trim() })),
+      _user: req.user.id,
+      dateSent: Date.now(),
+    });
+
+    // Great place to send an email!
+    const mailer = new Mailer(survey, surveyTemplate(survey));
+    mailer.send();
+  });
 };
