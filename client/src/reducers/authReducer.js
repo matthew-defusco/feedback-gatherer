@@ -18,6 +18,11 @@ export const handleToken = createAsyncThunk("handleToken", async (token) => {
   return response.data;
 });
 
+export const submitSurvey = createAsyncThunk("submitSurvey", async (values) => {
+  const response = await axios.post("/api/surveys", values);
+  return response.data;
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -38,6 +43,14 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(handleToken.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+    });
+
+    builder.addCase(submitSurvey.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(submitSurvey.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload;
     });

@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useEffect } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import { getUser } from '../reducers/authReducer';
-import Header from './Header';
-import Landing from './Landing';
-
-const Dashboard = () => <h2>Dashboard</h2>;
-const SurveyNew = () => <h2>SurveyNew</h2>;
+import { getUser } from "../reducers/authReducer";
+import Header from "./Header";
+import Landing from "./Landing";
+import Dashboard from "./Dashboard";
+import SurveyNew from "./survey/SurveyNew";
 
 const App = () => {
   const dispatch = useDispatch();
