@@ -1,20 +1,26 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const submitSurvey = createAsyncThunk("submitSurvey", async (values) => {
-  const response = await axios.post("/api/surveys", values);
+export const getSurveys = createAsyncThunk("getSurveys", async () => {
+  const response = await axios.get("/api/surveys");
   return response.data;
 });
 
 const surveySlice = createSlice({
   name: "survey",
   initialState: {
-    user: null,
+    surveys: [],
+    isLoading: false,
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(submitSurvey.fulfilled, (state, action) => {
-      state.user = action.payload;
+    builder.addCase(getSurveys.fulfilled, (state, action) => {
+      state.surveys = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(getSurveys.pending, (state) => {
+      state.isLoading = true;
     });
   },
 });
